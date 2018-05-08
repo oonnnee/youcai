@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://47.94.238.122/youcai
+    password: qing1016..
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+  jpa:
+    show-sql: true
