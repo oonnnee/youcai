@@ -7,19 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GuestRepositoryTest {
 
-    private static final String NAME = GuestRepositoryTest.class.getName();
+    private static final String NAME = "["+GuestRepositoryTest.class.getName()+"] ";
 
     @Autowired
     private GuestRepository guestRepository;
 
     @Test
-    public void save(){
+    @Transactional
+    public void test(){
+        Guest result = null;
+
         Guest guest = new Guest();
         guest.setId("123");
         guest.setName("李达达");
@@ -31,9 +36,20 @@ public class GuestRepositoryTest {
         guest.setLeader2("黛慕白");
         guest.setMobile2("15348932791");
         guest.setNote("this is a note");
-        Guest result = guestRepository.save(guest);
 
-        assertTrue("["+NAME+"] save", result.getId().equals("123"));
+        result = guestRepository.save(guest);
+        assertTrue(NAME+"save", result.getId().equals("123"));
+
+        guest.setPwd("qing1016");
+        result = guestRepository.save(guest);
+        assertTrue(NAME+"update", result.getPwd().equals("qing1016"));
+
+        result = guestRepository.findOne("123");
+        assertTrue(NAME+"findOne", result.getId().equals("123"));
+
+        guestRepository.delete("123");
+        result = guestRepository.findOne("123");
+        assertTrue(NAME+"delete", result == null);
     }
 
 }
