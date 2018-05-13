@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Data
+@Table(name = "orders")
 public class Order {
 
     /*--- 联合主键：采购时间、采购客户id、采购产品id ---*/

@@ -42,11 +42,9 @@ public class OrderRepositoryTest {
 
         Order result = null;
 
-        orderRepository.findOne(id);
+        result = orderRepository.save(order);
+        assertTrue(NAME+"save",result != null);
 
-//        result = orderRepository.save(order);
-//        assertTrue(NAME+"save",result != null);
-        /*
         order.setNote("hi,note");
         result = orderRepository.save(order);
         assertTrue(NAME+"update",result.getNote().equals("hi,note"));
@@ -57,6 +55,6 @@ public class OrderRepositoryTest {
         orderRepository.delete(id);
         result = orderRepository.findOne(id);
         assertTrue(NAME+"delete",result == null);
-        */
+
     }
 }

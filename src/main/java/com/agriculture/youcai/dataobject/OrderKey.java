@@ -13,13 +13,13 @@ import java.util.Date;
 @Data
 public class OrderKey implements Serializable {
 
-    /*--- 采购单日期---*/
+    /*--- 采购单日期 ---*/
     private Date odate;
 
     /*--- 采购单客户id ---*/
     private String guestId;
 
-    /*--- 采购单产品id---*/
+    /*--- 采购单产品id ---*/
     private String productId;
 
 }

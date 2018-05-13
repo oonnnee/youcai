@@ -21,13 +21,4 @@ public class ResultVO<T> {
         this.msg = msg;
         this.data = data;
     }
-
-    public static ResultVO success(Object data){
-        return new ResultVO(200, "成功", data);
-    }
-
-    public static ResultVO error(String msg){
-        return new ResultVO(500, msg, null);
-    }
-
 }
