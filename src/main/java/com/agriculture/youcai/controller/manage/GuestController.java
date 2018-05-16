@@ -10,6 +10,7 @@ import com.agriculture.youcai.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,7 +31,7 @@ public class GuestController {
     public ResultVO update(Guest guest){
         //TODO 【管理端】更新客户，表单校验
         Guest updateResult = guestService.update(guest);
-        return ResultVOUtils.success(guest);
+        return ResultVOUtils.success(updateResult);
     }
 
     @GetMapping("/find")
@@ -45,10 +46,13 @@ public class GuestController {
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ){
-        if (page<0 || size<=0){
-            throw new YoucaiException(ResultEnum.MANAGE_GUEST_LIST_PARAM_ERROR);
-        }
-        Page<Guest> guestPage = guestService.findAll(new PageRequest(page, size));
+        /*------------ 1.准备 -------------*/
+        page = page<0 ? 0:page;
+        size = size<=0 ? 10:size;
+        Pageable pageable = new PageRequest(page, size);
+
+        /*------------ 2.查询 -------------*/
+        Page<Guest> guestPage = guestService.findAll(pageable);
         return ResultVOUtils.success(guestPage);
     }
 

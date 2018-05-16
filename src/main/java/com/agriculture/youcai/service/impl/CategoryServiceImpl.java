@@ -18,14 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findOne(String code) {
-        if (code == null){
-            throw new YoucaiException(ResultEnum.MANAGE_CATEGORY_FIND_ONE_NULL_CODE);
-        }
-        Category findResult = categoryRepository.findOne(code);
-        if (findResult == null){
-            throw new YoucaiException(ResultEnum.MANAGE_CATEGORY_FIND_ONE_NOT_EXIST);
-        }
-        return findResult;
+        return categoryRepository.findOne(code);
     }
 
     @Override

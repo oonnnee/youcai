@@ -33,12 +33,6 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     public Guest update(Guest guest) {
-        if (guest.getId() == null){
-            throw new YoucaiException(ResultEnum.MANAGE_GUEST_UPDATE_NULL_ID);
-        }
-        if (guestRepository.findOne(guest.getId()) == null){
-            throw new YoucaiException(ResultEnum.MANAGE_GUEST_UPDATE_NOT_EXIST);
-        }
         //TODO 【管理端】更新客户，加密
         Guest result = guestRepository.save(guest);
         if (result == null){
@@ -50,21 +44,12 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     public void delete(String id) {
-        if (id == null){
-            throw new YoucaiException(ResultEnum.MANAGE_GUEST_DELETE_NULL_ID);
-        }
         guestRepository.delete(id);
     }
 
     @Override
     public Guest findOne(String id) {
-        if (id == null){
-            throw new YoucaiException(ResultEnum.MANAGE_GUEST_FIND_ONE_NULL_ID);
-        }
         Guest result = guestRepository.findOne(id);
-        if (result == null){
-            throw new YoucaiException(ResultEnum.MANAGE_GUEST_FIND_ONE_NOT_EXIST);
-        }
         return guestRepository.findOne(id);
     }
 

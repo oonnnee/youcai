@@ -2,6 +2,7 @@ package com.agriculture.youcai.form;
 
 import lombok.Data;
 import lombok.NonNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Data
 public class GuestForm {
