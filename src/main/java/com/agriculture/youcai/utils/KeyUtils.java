@@ -6,14 +6,14 @@ package com.agriculture.youcai.utils;
 public class KeyUtils {
 
     /**
-     * @return 当前时间毫秒数后6位+4位随机数
+     * @return 4位随机数+当前时间毫秒数后6位
      */
     public static synchronized String generate() {
 
         String time = String.valueOf(System.currentTimeMillis()).substring(7, 13);
         String random = String.valueOf((int) (Math.random()*9000)+1000);
 
-        return time+random;
+        return random+time;
     }
 
     public static void main(String[] args ){

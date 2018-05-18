@@ -7,6 +7,7 @@ size:2	// 非必须，默认为10
 
 ```
 ####返回
+```
 {
     "code": 0,
     "msg": "成功",
@@ -21,3 +22,5 @@ size:2	// 非必须，默认为10
         "numberOfElements": 2   // content的size
     }
 }
+```
+

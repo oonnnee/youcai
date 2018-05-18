@@ -21,28 +21,43 @@ public class GuestController {
     private GuestService guestService;
 
     @PostMapping("/save")
-    public ResultVO save(Guest guest){
+    public ResultVO<Guest> save(Guest guest){
         //TODO 【管理端】新增客户，表单校验
         Guest saveResult = guestService.save(guest);
         return ResultVOUtils.success(saveResult);
     }
 
+    @PostMapping("/delete")
+    public ResultVO delete(
+            @RequestParam String id
+    ){
+        guestService.delete(id);
+        return ResultVOUtils.success();
+    }
+
     @PostMapping("/update")
-    public ResultVO update(Guest guest){
+    public ResultVO<Guest> update(Guest guest){
         //TODO 【管理端】更新客户，表单校验
         Guest updateResult = guestService.update(guest);
         return ResultVOUtils.success(updateResult);
     }
 
+    @PostMapping("/updatePwd")
+    public ResultVO updatePwd(String id, String pwd){
+        guestService.updatePwd(id, pwd);
+        return ResultVOUtils.success();
+    }
+
     @GetMapping("/find")
-    public ResultVO findOne(
+    public ResultVO<Guest> findOne(
             @RequestParam String id
     ){
-        return ResultVOUtils.success(guestService.findOne(id));
+        Guest findResult = guestService.findOne(id);
+        return ResultVOUtils.success(findResult);
     }
 
     @GetMapping("/list")
-    public ResultVO findAll(
+    public ResultVO<Page<Guest>> findAll(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ){
@@ -56,12 +71,35 @@ public class GuestController {
         return ResultVOUtils.success(guestPage);
     }
 
-    @PostMapping("/delete")
-    public ResultVO delete(
-            @RequestParam String id
+    @GetMapping("/findByNameLike")
+    public ResultVO<Page<Guest>> findByNameLike(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(required = false) String name
     ){
-        guestService.delete(id);
-        return ResultVOUtils.success();
+        /*------------ 1.准备 -------------*/
+        page = page<0 ? 0:page;
+        size = size<=0 ? 10:size;
+        Pageable pageable = new PageRequest(page, size);
+
+        /*------------ 2.查询 -------------*/
+        Page<Guest> guestPage = guestService.findByNameLike(name, pageable);
+        return ResultVOUtils.success(guestPage);
     }
 
+    @GetMapping("/findByIdLike")
+    public ResultVO<Page<Guest>> findByIdLike(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(required = false) String id
+    ){
+        /*------------ 1.准备 -------------*/
+        page = page<0 ? 0:page;
+        size = size<=0 ? 10:size;
+        Pageable pageable = new PageRequest(page, size);
+
+        /*------------ 2.查询 -------------*/
+        Page<Guest> guestPage = guestService.findByIdLike(id, pageable);
+        return ResultVOUtils.success(guestPage);
+    }
 }

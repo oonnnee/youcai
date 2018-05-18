@@ -18,6 +18,6 @@ public interface ProductService {
 
     Page<Product> findAll(Pageable pageable);
 
-    Page<Product> findByPCodeIn(List<String> pCodes, Pageable pageable);
+    Page<Product> findBy(String name, List<String> pCodes, Pageable pageable);
 
 }

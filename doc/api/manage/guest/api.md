@@ -5,15 +5,15 @@ POST /manage/guest/save
 ```
 ####参数
 ```
-pwd: 123456
-name: 赵无极
-addr: 北京
-phone: 17843762983
-leader1: 陈晨
-mobile1: 18943377687
-leader2: 吴奋斗
-mobile2: 18876743672
-note: this is a note
+pwd:123456
+name:永胜公司
+addr:北京
+phone:17843762983
+leader1:刘庄
+mobile1:18943377687
+leader2:陈琦
+mobile2:18876743672
+note:测试数据
 ```
 ####返回
 成功
@@ -22,15 +22,15 @@ note: this is a note
     "code": 0,
     "msg": "成功",
     "data": {
-        "id": "6103404811",
-        "name": "赵无极",
+        "id": "5196402861",
+        "name": "永胜公司",
         "addr": "北京",
         "phone": "17843762983",
         "mobile1": "18943377687",
-        "leader1": "陈晨",
+        "leader1": "刘庄",
         "mobile2": "18876743672",
-        "leader2": "吴奋斗",
-        "note": "this is a note"
+        "leader2": "陈琦",
+        "note": "测试数据"
     }
 }
 ```
@@ -41,22 +41,41 @@ note: this is a note
     "msg": "新增客户，失败"
 }
 ```
+
+
+###删除客户
+```
+POST /manage/guest/delete
+```
+####参数
+```
+id: 8110011548
+```
+####返回
+成功
+```
+{
+    "code": 0,
+    "msg": "成功"
+}
+```
+
+
 ###更新客户
 ```
 POST /manage/guest/update
 ```
 ####参数
 ```
-id: 6103404811
-pwd: 123456
-name: 赵无极
-addr: 上海
-phone: 17843762983
-leader1: 陈晨
-mobile1: 18943377687
-leader2: 吴奋斗
-mobile2: 18876743672
-note: this is a note
+id:5196402861
+name:永胜公司
+addr:上海
+phone:17843762983
+leader1:刘庄
+mobile1:18943377687
+leader2:陈琦
+mobile2:18876743672
+note:测试数据
 ```
 ###返回
 成功
@@ -65,15 +84,15 @@ note: this is a note
     "code": 0,
     "msg": "成功",
     "data": {
-        "id": "6103404811",
-        "name": "赵无极",
+        "id": "5196402861",
+        "name": "永胜公司",
         "addr": "上海",
         "phone": "17843762983",
         "mobile1": "18943377687",
-        "leader1": "陈晨",
+        "leader1": "刘庄",
         "mobile2": "18876743672",
-        "leader2": "吴奋斗",
-        "note": "this is a note"
+        "leader2": "陈琦",
+        "note": "测试数据"
     }
 }
 ```
@@ -85,13 +104,33 @@ note: this is a note
 }
 ```
 
-###查询单个客户
+
+###更改客户密码
+```
+POST /manage/guest/updatePwd
+```
+####参数
+```
+id:5196402861
+pwd:1234567
+```
+####返回
+成功
+```
+{
+    "code": 0,
+    "msg": "成功"
+}
+```
+
+
+###通过id查询单个客户
 ```
 GET /manage/guest/find
 ```
 ####参数
 ```
-id: 6103404811
+id:5196402861
 ```
 ####返回
 成功
@@ -100,18 +139,118 @@ id: 6103404811
     "code": 0,
     "msg": "成功",
     "data": {
-        "id": "6103404811",
-        "name": "赵无极",
+        "id": "5196402861",
+        "name": "永胜公司",
         "addr": "上海",
         "phone": "17843762983",
         "mobile1": "18943377687",
-        "leader1": "陈晨",
+        "leader1": "刘庄",
         "mobile2": "18876743672",
-        "leader2": "吴奋斗",
-        "note": "this is a note"
+        "leader2": "陈琦",
+        "note": "测试数据"
     }
 }
 ```
+
+
+###通过名称模糊查询客户
+```
+GET /manage/guest/findByNameLike
+```
+####参数
+```
+page:0
+size:10
+name:公司
+```
+####返回
+成功
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": {
+        "content": [
+            {
+                "id": "4043164973",
+                "pwd": "123456",
+                "name": "牛山公司",
+                "addr": "北京",
+                "phone": "13976298323",
+                "mobile1": "18843347687",
+                "leader1": "赵昭",
+                "mobile2": "18876743672",
+                "leader2": "陈紫风",
+                "note": "测试数据"
+            },
+            {
+                "id": "5196402861",
+                "pwd": "1234567",
+                "name": "永胜公司",
+                "addr": "上海",
+                "phone": "17843762983",
+                "mobile1": "18943377687",
+                "leader1": "刘庄",
+                "mobile2": "18876743672",
+                "leader2": "陈琦",
+                "note": "测试数据"
+            }
+        ],
+        "totalElements": 2,
+        "totalPages": 1,
+        "last": true,
+        "number": 0,
+        "size": 10,
+        "first": true,
+        "numberOfElements": 2
+    }
+}
+```
+
+
+###通过id模糊查询客户
+```
+GET /manage/guest/findByIdLike
+```
+####参数
+```
+page:0
+size:10
+id:43
+```
+####返回
+成功
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": {
+        "content": [
+            {
+                "id": "4043164973",
+                "pwd": "123456",
+                "name": "牛山公司",
+                "addr": "北京",
+                "phone": "13976298323",
+                "mobile1": "18843347687",
+                "leader1": "赵昭",
+                "mobile2": "18876743672",
+                "leader2": "陈紫风",
+                "note": "测试数据"
+            }
+        ],
+        "last": true,
+        "totalElements": 1,
+        "totalPages": 1,
+        "number": 0,
+        "size": 10,
+        "numberOfElements": 1,
+        "first": true
+    }
+}
+```
+
+
 ###查询客户列表
 ```
 GET /manage/guest/list
@@ -130,54 +269,35 @@ size: 2    // 非必须，默认为10
     "data": {
         "content": [
             {
-                "id": "7811978269",
-                "pwd": "qing1016..",
-                "name": "赵无极",
+                "id": "4043164973",
+                "name": "牛山公司",
                 "addr": "北京",
-                "phone": "17843762983",
-                "mobile1": "18943377687",
-                "leader1": "陈晨",
+                "phone": "13976298323",
+                "mobile1": "18843347687",
+                "leader1": "赵昭",
                 "mobile2": "18876743672",
-                "leader2": "吴奋斗",
-                "note": "this is a note"
+                "leader2": "陈紫风",
+                "note": "测试数据"
             },
             {
-                "id": "8110011548",
-                "pwd": "qing1016..",
-                "name": "陈琦",
-                "addr": "北京",
+                "id": "5196402861",
+                "name": "永胜公司",
+                "addr": "上海",
                 "phone": "17843762983",
                 "mobile1": "18943377687",
-                "leader1": "陈晨",
+                "leader1": "刘庄",
                 "mobile2": "18876743672",
-                "leader2": "吴奋斗",
-                "note": "this is a note"
+                "leader2": "陈琦",
+                "note": "测试数据"
             }
         ],
-        "last": false,  // 是否为最后一页
-        "totalElements": 4, // 客户总数
-        "totalPages": 2,    // 总页数
-        "size": 2,  // 前端传来的size
-        "number": 0,    // 前端传来的page
-        "first": true,  // 是否为第一页
-        "numberOfElements": 2   // content的size
+        "last": true,
+        "totalElements": 2,
+        "totalPages": 1,
+        "number": 0,
+        "size": 2,
+        "numberOfElements": 2,
+        "first": true
     }
-}
-```
-
-###删除客户
-```
-POST /manage/guest/delete
-```
-####参数
-```
-id: 8110011548
-```
-####返回
-成功
-```
-{
-    "code": 0,
-    "msg": "成功"
 }
 ```

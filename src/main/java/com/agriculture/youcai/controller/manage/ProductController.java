@@ -65,11 +65,12 @@ public class ProductController {
         return ResultVOUtils.success(productPage);
     }
 
-    @GetMapping("/findByPCodeIn")
+    @GetMapping("/findBy")
     public ResultVO<Page<Product>> findByPCodeIn(
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer size,
-            @RequestParam(name = "PCodes") String codeStr
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false, name = "PCodes") String codeStr
     ){
         /*------------ 1.准备 -------------*/
         // 分页
@@ -82,7 +83,7 @@ public class ProductController {
         }
 
         /*------------ 2.查询 -------------*/
-        Page<Product> findResult = productService.findByPCodeIn(codes, pageable);
+        Page<Product> findResult = productService.findBy(name, codes, pageable);
 
         return ResultVOUtils.success(findResult);
     }

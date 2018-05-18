@@ -1,6 +1,8 @@
 package com.agriculture.youcai.dataobject;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,6 +15,8 @@ import java.util.Date;
  */
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pricelist {
 
     /*--- 联合主键：报价日期、报价客户id、报价产品id ---*/

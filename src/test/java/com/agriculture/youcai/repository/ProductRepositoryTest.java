@@ -5,11 +5,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -52,4 +57,14 @@ public class ProductRepositoryTest {
         assertTrue(NAME+"delete", result == null);
     }
 
+    @Test
+    public void findByNameLikeAndPCodeIn(){
+        /*------------ 1.准备 -------------*/
+        String name = "%肉%";
+        List<String> pCodes = Arrays.asList("0100", "0200");
+        Pageable pageable = new PageRequest(0,3);
+
+        /*------------ 2.查询 -------------*/
+        Page<Product> productPage = productRepository.findByNameLikeAndPCodeIn(name, pCodes, pageable);
+    }
 }

@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -54,4 +55,11 @@ public class PricelistRepositoryTest {
         assertTrue(NAME+"delete", result == null);
     }
 
+    @Test
+    public void findById_GuestId(){
+        /*------------ 1.准备 -------------*/
+        String guestId = "123";
+        /*------------ 2.查询 -------------*/
+        List<Pricelist> pricelists = pricelistRepository.findById_GuestId(guestId);
+    }
 }
