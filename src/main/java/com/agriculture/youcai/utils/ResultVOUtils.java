@@ -1,5 +1,6 @@
 package com.agriculture.youcai.utils;
 
+import com.agriculture.youcai.enums.ResultEnum;
 import com.agriculture.youcai.vo.ResultVO;
 
 public class ResultVOUtils {
@@ -16,4 +17,7 @@ public class ResultVOUtils {
         return new ResultVO(code, msg, null);
     }
 
+    public static ResultVO error(ResultEnum resultEnum){
+        return new ResultVO(resultEnum.getCode(), resultEnum.getMsg(), null);
+    }
 }

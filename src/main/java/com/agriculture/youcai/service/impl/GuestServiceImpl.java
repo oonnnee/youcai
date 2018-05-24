@@ -11,11 +11,14 @@ import com.agriculture.youcai.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class GuestServiceImpl implements GuestService {
+public class GuestServiceImpl implements GuestService, UserDetailsService {
 
     @Autowired
     private GuestRepository guestRepository;
@@ -102,5 +105,14 @@ public class GuestServiceImpl implements GuestService {
         //TODO 加密
         findResult.setPwd(pwd);
         guestRepository.save(findResult);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Guest findResult = guestRepository.findById(s);
+        if (findResult == null){
+            throw new UsernameNotFoundException("用户名不存在");
+        }
+        return findResult;
     }
 }

@@ -8,3 +8,9 @@ spring:
     show-sql: true
   jackson:
     default-property-inclusion: non_null
+security:
+  user:
+    password: 123456
+    name: admin
+  basic:
+    enabled: false
