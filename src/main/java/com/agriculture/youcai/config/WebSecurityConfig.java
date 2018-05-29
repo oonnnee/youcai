@@ -1,5 +1,6 @@
 package com.agriculture.youcai.config;
 
+import com.agriculture.youcai.dataobject.Guest;
 import com.agriculture.youcai.enums.ResultEnum;
 import com.agriculture.youcai.service.impl.GuestServiceImpl;
 import com.agriculture.youcai.utils.ResultVOUtils;
@@ -54,7 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
 
-                        ResultVO success = ResultVOUtils.success("登录成功");
+                        Guest guest = (Guest) authentication.getPrincipal();
+                        guest.setPwd(null);
+                        ResultVO success = ResultVOUtils.success(guest);
                         httpServletResponse.getWriter().write(new Gson().toJson(success));
                     }
                 })
@@ -66,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
 
-                        ResultVO success = ResultVOUtils.success("登出成功");
+                        ResultVO success = ResultVOUtils.success("注销成功");
                         httpServletResponse.getWriter().write(new Gson().toJson(success));
                     }
                 })
