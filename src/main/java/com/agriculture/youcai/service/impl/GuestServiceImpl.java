@@ -86,7 +86,13 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         if (StringUtils.isEmpty(name)){
             return guestRepository.findAll(pageable);
         }
-        return guestRepository.findByNameLike("%"+name+"%", pageable);
+        Page<Guest> guestPage = guestRepository.findByNameLike("%" + name + "%", pageable);
+        /*------------ 2.结果处理 -------------*/
+        // 密码置空
+        for (Guest guest : guestPage.getContent()){
+            guest.setPwd(null);
+        }
+        return guestPage;
     }
 
     @Override
@@ -94,7 +100,13 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         if (StringUtils.isEmpty(id)){
             return guestRepository.findAll(pageable);
         }
-        return guestRepository.findByIdLike("%"+id+"%", pageable);
+        Page<Guest> guestPage = guestRepository.findByIdLike("%" + id + "%", pageable);
+        /*------------ 2.结果处理 -------------*/
+        // 密码置空
+        for (Guest guest : guestPage.getContent()){
+            guest.setPwd(null);
+        }
+        return guestPage;
     }
 
     @Override
@@ -109,10 +121,10 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Guest findResult = guestRepository.findById(s);
-        if (findResult == null){
+        if ("admin".equals(s) == false){
             throw new UsernameNotFoundException("用户名不存在");
         }
+        Guest findResult = guestRepository.findById("admin");
         return findResult;
     }
 }
