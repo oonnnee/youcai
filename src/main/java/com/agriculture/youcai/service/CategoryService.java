@@ -3,6 +3,7 @@ package com.agriculture.youcai.service;
 import com.agriculture.youcai.dataobject.Category;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CategoryService {
 
@@ -10,4 +11,5 @@ public interface CategoryService {
 
     List<Category> findAll();
 
+    Map<String, String> findAllInMap();
 }
