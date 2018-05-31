@@ -4,6 +4,8 @@ spring:
     password: qing1016..
     driver-class-name: com.mysql.jdbc.Driver
     username: root
+  resources:
+    static-locations: file:${img.location}
   jpa:
     show-sql: true
   jackson:
@@ -14,3 +16,5 @@ security:
     name: admin
   basic:
     enabled: false
+img:
+  location: F:\temp\youcai\image
