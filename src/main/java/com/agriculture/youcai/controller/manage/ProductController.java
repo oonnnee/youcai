@@ -1,6 +1,5 @@
 package com.agriculture.youcai.controller.manage;
 
-import com.agriculture.youcai.dataobject.Category;
 import com.agriculture.youcai.dataobject.Product;
 import com.agriculture.youcai.service.CategoryService;
 import com.agriculture.youcai.service.ProductService;
@@ -90,6 +89,7 @@ public class ProductController {
 
         return ResultVOUtils.success(productVOPage);
     }
+
 
     @GetMapping("/findBy")
     public ResultVO<Page<ProductVO>> findByPCodeIn(

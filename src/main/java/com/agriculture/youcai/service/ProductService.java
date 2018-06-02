@@ -16,6 +16,8 @@ public interface ProductService {
 
     Product findOne(String id);
 
+    List<Product> findAll();
+
     Page<Product> findAll(Pageable pageable);
 
     Page<Product> findBy(String name, List<String> pCodes, Pageable pageable);

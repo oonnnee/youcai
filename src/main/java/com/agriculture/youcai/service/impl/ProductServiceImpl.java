@@ -83,4 +83,9 @@ public class ProductServiceImpl implements ProductService {
         }
         return productPage;
     }
+
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 }
