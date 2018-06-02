@@ -11,10 +11,8 @@ spring:
   jackson:
     default-property-inclusion: non_null
 security:
-  user:
-    password: 123456
-    name: admin
   basic:
     enabled: false
 img:
-  location: F:\temp\youcai\image
+#  location: F:\temp\youcai\image
+  location: /Users/macos/tmp/youcai/image
