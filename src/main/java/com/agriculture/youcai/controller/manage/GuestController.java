@@ -24,6 +24,7 @@ public class GuestController {
     public ResultVO<Guest> save(Guest guest){
         //TODO 【管理端】新增客户，表单校验
         Guest saveResult = guestService.save(guest);
+        saveResult.setPwd(null);
         return ResultVOUtils.success(saveResult);
     }
 
@@ -39,6 +40,7 @@ public class GuestController {
     public ResultVO<Guest> update(Guest guest){
         //TODO 【管理端】更新客户，表单校验
         Guest updateResult = guestService.update(guest);
+        updateResult.setPwd(null);
         return ResultVOUtils.success(updateResult);
     }
 
@@ -53,6 +55,7 @@ public class GuestController {
             @RequestParam String id
     ){
         Guest findResult = guestService.findOne(id);
+        findResult.setPwd(null);
         return ResultVOUtils.success(findResult);
     }
 
@@ -68,6 +71,10 @@ public class GuestController {
 
         /*------------ 2.查询 -------------*/
         Page<Guest> guestPage = guestService.findAll(pageable);
+        // 密码置空
+        for (Guest guest : guestPage.getContent()){
+            guest.setPwd(null);
+        }
         return ResultVOUtils.success(guestPage);
     }
 
@@ -84,6 +91,10 @@ public class GuestController {
 
         /*------------ 2.查询 -------------*/
         Page<Guest> guestPage = guestService.findByNameLike(name, pageable);
+        // 密码置空
+        for (Guest guest : guestPage.getContent()){
+            guest.setPwd(null);
+        }
         return ResultVOUtils.success(guestPage);
     }
 
@@ -100,6 +111,10 @@ public class GuestController {
 
         /*------------ 2.查询 -------------*/
         Page<Guest> guestPage = guestService.findByIdLike(id, pageable);
+        // 密码置空
+        for (Guest guest : guestPage.getContent()){
+            guest.setPwd(null);
+        }
         return ResultVOUtils.success(guestPage);
     }
 }

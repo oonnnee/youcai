@@ -4,6 +4,7 @@ import com.agriculture.youcai.dataobject.Pricelist;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface PricelistService {
 
@@ -14,4 +15,6 @@ public interface PricelistService {
     void save(List<Pricelist> pricelists);
 
     void delete(String guestId, Date pdate);
+
+    List<Date> findPdatesByGuestId(String guestId);
 }

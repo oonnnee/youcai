@@ -14,7 +14,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -87,5 +89,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Map<String, Product> findMap() {
+        List<Product> products = productRepository.findAll();
+        Map<String, Product> map = new HashMap<>();
+        for (Product product : products){
+            map.put(product.getId(), product);
+        }
+        return map;
     }
 }

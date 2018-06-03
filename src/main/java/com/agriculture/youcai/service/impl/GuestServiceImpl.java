@@ -31,7 +31,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         if (saveResult == null){
             throw new YoucaiException(ResultEnum.MANAGE_GUEST_SAVE_ERROR);
         }
-        saveResult.setPwd(null);
         return saveResult;
     }
 
@@ -47,7 +46,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
             throw new YoucaiException(ResultEnum.MANAGE_GUEST_UPDATE_ERROR);
         }
         /*------------ 3.结果处理 -------------*/
-        updateResult.setPwd(null);
         /*------------ 4.返回结果 -------------*/
         return updateResult;
     }
@@ -62,8 +60,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         /*------------ 1.查询 -------------*/
         Guest result = guestRepository.findOne(id);
         /*------------ 2.结果处理 -------------*/
-        // 密码置空
-        result.setPwd(null);
         /*------------ 3.返回结果 -------------*/
         return result;
     }
@@ -73,10 +69,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         /*------------ 1.查询 -------------*/
         Page<Guest> guestPage = guestRepository.findAll(pageable);
         /*------------ 2.结果处理 -------------*/
-        // 密码置空
-        for (Guest guest : guestPage.getContent()){
-            guest.setPwd(null);
-        }
         /*------------ 3.返回结果 -------------*/
         return guestPage;
     }
@@ -87,11 +79,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
             return guestRepository.findAll(pageable);
         }
         Page<Guest> guestPage = guestRepository.findByNameLike("%" + name + "%", pageable);
-        /*------------ 2.结果处理 -------------*/
-        // 密码置空
-        for (Guest guest : guestPage.getContent()){
-            guest.setPwd(null);
-        }
         return guestPage;
     }
 
@@ -101,11 +88,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
             return guestRepository.findAll(pageable);
         }
         Page<Guest> guestPage = guestRepository.findByIdLike("%" + id + "%", pageable);
-        /*------------ 2.结果处理 -------------*/
-        // 密码置空
-        for (Guest guest : guestPage.getContent()){
-            guest.setPwd(null);
-        }
         return guestPage;
     }
 
@@ -115,7 +97,6 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         Guest findResult = guestRepository.findOne(id);
         /*------------ 2.更新密码 -------------*/
         //TODO 加密
-        findResult.setPwd(pwd);
         guestRepository.save(findResult);
     }
 

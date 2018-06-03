@@ -3,12 +3,15 @@ package com.agriculture.youcai.service.impl;
 import com.agriculture.youcai.dataobject.Pricelist;
 import com.agriculture.youcai.repository.PricelistRepository;
 import com.agriculture.youcai.service.PricelistService;
+import com.agriculture.youcai.utils.comparator.DateComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class PricelistServiceImpl implements PricelistService {
@@ -18,7 +21,8 @@ public class PricelistServiceImpl implements PricelistService {
 
     @Override
     public List<Pricelist> findById_GuestId(String guestId) {
-        return pricelistRepository.findById_GuestId(guestId);
+        List<Pricelist> pricelists = pricelistRepository.findById_GuestId(guestId);
+        return pricelists;
     }
 
     @Override
@@ -37,5 +41,11 @@ public class PricelistServiceImpl implements PricelistService {
     @Override
     public List<Pricelist> findById_GuestIdAndId_pdate(String guestId, Date pdate) {
         return pricelistRepository.findById_GuestIdAndId_Pdate(guestId, pdate);
+    }
+
+    @Override
+    public List<Date> findPdatesByGuestId(String guestId) {
+        List<Date> dates = pricelistRepository.findDistinctId_PdateById_GuestId(guestId);
+        return dates;
     }
 }

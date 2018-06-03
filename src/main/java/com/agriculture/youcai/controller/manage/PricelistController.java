@@ -1,20 +1,17 @@
 package com.agriculture.youcai.controller.manage;
 
-import com.agriculture.youcai.dataobject.Guest;
-import com.agriculture.youcai.dataobject.Pricelist;
-import com.agriculture.youcai.dataobject.PricelistKey;
-import com.agriculture.youcai.dataobject.Product;
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com.agriculture.youcai.dataobject.*;
 import com.agriculture.youcai.dto.PricelistDTO;
 import com.agriculture.youcai.enums.ResultEnum;
 import com.agriculture.youcai.exception.YoucaiException;
+import com.agriculture.youcai.service.CategoryService;
 import com.agriculture.youcai.service.GuestService;
 import com.agriculture.youcai.service.PricelistService;
 import com.agriculture.youcai.service.ProductService;
 import com.agriculture.youcai.utils.ResultVOUtils;
 import com.agriculture.youcai.utils.comparator.DateComparator;
-import com.agriculture.youcai.vo.PricelistDateVO;
-import com.agriculture.youcai.vo.PricelistVO;
-import com.agriculture.youcai.vo.ResultVO;
+import com.agriculture.youcai.vo.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +39,9 @@ public class PricelistController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
 
     @GetMapping("/findPdateListByGuestIdLike")
     public ResultVO<Page<PricelistDateVO>> findPdateListByGuestIdLike(
@@ -59,6 +59,9 @@ public class PricelistController {
         List<PricelistDateVO> pricelistDateVOS = new ArrayList<>();
         Page<Guest> guestPage = guestService.findByIdLike(guestId, pageable);
         for (Guest guest : guestPage.getContent()){
+            if (guest.getId().equals("admin")){
+                continue;
+            }
             List<Pricelist> pricelists = pricelistService.findById_GuestId(guest.getId());
             Set<Date> dates = new TreeSet<>(new DateComparator());
             for (Pricelist pricelist : pricelists){
@@ -68,7 +71,7 @@ public class PricelistController {
             pricelistDateVOS.add(pricelistVO);
         }
 
-        Page<PricelistDateVO> pricelistDateVOPage = new PageImpl<PricelistDateVO>(pricelistDateVOS, pageable, pricelistDateVOS.size());
+        Page<PricelistDateVO> pricelistDateVOPage = new PageImpl<PricelistDateVO>(pricelistDateVOS, pageable, guestPage.getTotalElements());
         return ResultVOUtils.success(pricelistDateVOPage);
     }
 
@@ -88,6 +91,9 @@ public class PricelistController {
         List<PricelistDateVO> pricelistDateVOS = new ArrayList<>();
         Page<Guest> guestPage = guestService.findByNameLike(guestName, pageable);
         for (Guest guest : guestPage.getContent()){
+            if (guest.getId().equals("admin")){
+                continue;
+            }
             List<Pricelist> pricelists = pricelistService.findById_GuestId(guest.getId());
             Set<Date> dates = new TreeSet<>(new DateComparator());
             for (Pricelist pricelist : pricelists){
@@ -97,7 +103,7 @@ public class PricelistController {
             pricelistDateVOS.add(pricelistVO);
         }
 
-        Page<PricelistDateVO> pricelistDateVOPage = new PageImpl<PricelistDateVO>(pricelistDateVOS, pageable, pricelistDateVOS.size());
+        Page<PricelistDateVO> pricelistDateVOPage = new PageImpl<PricelistDateVO>(pricelistDateVOS, pageable, guestPage.getTotalElements());
         return ResultVOUtils.success(pricelistDateVOPage);
     }
 
@@ -112,11 +118,13 @@ public class PricelistController {
         page = page<0 ? 0:page;
         size = size<=0 ? 10:size;
         Pageable pageable = new PageRequest(page, size);
-
         /*------------ 2.查询 -------------*/
         List<PricelistDateVO> pricelistDateVOS = new ArrayList<>();
         Page<Guest> guestPage = guestService.findAll(pageable);
         for (Guest guest : guestPage.getContent()){
+            if (guest.getId().equals("admin")){
+                continue;
+            }
             List<Pricelist> pricelists = pricelistService.findById_GuestId(guest.getId());
             Set<Date> dates = new TreeSet<>(new DateComparator());
             for (Pricelist pricelist : pricelists){
@@ -125,8 +133,7 @@ public class PricelistController {
             PricelistDateVO pricelistVO = new PricelistDateVO(guest.getId(), guest.getName(), dates);
             pricelistDateVOS.add(pricelistVO);
         }
-
-        Page<PricelistDateVO> pricelistDateVOPage = new PageImpl<PricelistDateVO>(pricelistDateVOS, pageable, pricelistDateVOS.size());
+        Page<PricelistDateVO> pricelistDateVOPage = new PageImpl<PricelistDateVO>(pricelistDateVOS, pageable, guestPage.getTotalElements());
         return ResultVOUtils.success(pricelistDateVOPage);
     }
 
@@ -192,4 +199,48 @@ public class PricelistController {
         return ResultVOUtils.success(pricelistVO);
     }
 
+    @GetMapping("/findPdatesByGuestId")
+    public ResultVO<List<Date>> findPdatesByGuestId(
+            @RequestParam String guestId
+    ){
+        List<Date> dates = pricelistService.findPdatesByGuestId(guestId);
+        return ResultVOUtils.success(dates);
+    }
+
+    @GetMapping("/findByGuestIdAndPdateWithCategory")
+    public ResultVO<List<FindByGuestIdAndPdateWithCategoryVO>> findByGuestIdAndPdateWithCategory(
+            @RequestParam String guestId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date pdate
+    ){
+        /*------------ 1.查询数据 -------------*/
+        /*--- 产品大类数据 ---*/
+        List<Category> categories = categoryService.findAll();
+        /*--- 报价数据 ---*/
+        List<Pricelist> pricelists = pricelistService.findById_GuestIdAndId_pdate(guestId, pdate);
+        /*--- 产品数据 ---*/
+        Map<String, Product> productMap = productService.findMap();
+        /*------------ 2.数据拼装 -------------*/
+        List<FindByGuestIdAndPdateWithCategoryVO> findByGuestIdAndPdateWithCategoryVOS = new ArrayList<>();
+        for (Category category : categories){
+            FindByGuestIdAndPdateWithCategoryVO findByGuestIdAndPdateWithCategoryVO = new FindByGuestIdAndPdateWithCategoryVO();
+            findByGuestIdAndPdateWithCategoryVO.setCategoryCode(category.getCode());
+            findByGuestIdAndPdateWithCategoryVO.setCategoryName(category.getName());
+            List<FindByGuestIdAndPdateVO> findByGuestIdAndPdateVOS = new ArrayList<>();
+            for (Pricelist pricelist : pricelists){
+                Product product = productMap.get(pricelist.getId().getProductId());
+                if (product.getPCode().equals(category.getCode())){
+                    FindByGuestIdAndPdateVO findByGuestIdAndPdateVO = new FindByGuestIdAndPdateVO();
+                    findByGuestIdAndPdateVO.setProductId(pricelist.getId().getProductId());
+                    findByGuestIdAndPdateVO.setProductName(product.getName());
+                    findByGuestIdAndPdateVO.setPrice(pricelist.getPrice());
+                    findByGuestIdAndPdateVO.setNote(pricelist.getNote());
+                    findByGuestIdAndPdateVOS.add(findByGuestIdAndPdateVO);
+                }
+            }
+            findByGuestIdAndPdateWithCategoryVO.setFindByGuestIdAndPdateVOS(findByGuestIdAndPdateVOS);
+            findByGuestIdAndPdateWithCategoryVOS.add(findByGuestIdAndPdateWithCategoryVO);
+        }
+        /*------------ 3.返回 -------------*/
+        return ResultVOUtils.success(findByGuestIdAndPdateWithCategoryVOS);
+    }
 }

@@ -58,8 +58,15 @@ public class PricelistRepositoryTest {
     @Test
     public void findById_GuestId(){
         /*------------ 1.准备 -------------*/
-        String guestId = "123";
+        String guestId = "admin";
         /*------------ 2.查询 -------------*/
         List<Pricelist> pricelists = pricelistRepository.findById_GuestId(guestId);
     }
+
+    @Test
+    public void findId_PdateDistinctById_GuestId(){
+        List<Date> dates = pricelistRepository.findDistinctId_PdateById_GuestId("2231847254");
+        System.out.println(dates);
+    }
+
 }

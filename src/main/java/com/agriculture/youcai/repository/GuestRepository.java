@@ -12,4 +12,5 @@ public interface GuestRepository extends JpaRepository<Guest, String> {
     Page<Guest> findByIdLike(String id, Pageable pageable);
 
     Guest findById(String id);
+
 }
