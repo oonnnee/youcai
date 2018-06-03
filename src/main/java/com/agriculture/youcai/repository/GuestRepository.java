@@ -13,4 +13,5 @@ public interface GuestRepository extends JpaRepository<Guest, String> {
 
     Guest findById(String id);
 
+    Long countBy();
 }

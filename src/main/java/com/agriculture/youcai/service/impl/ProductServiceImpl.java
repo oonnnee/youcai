@@ -100,4 +100,9 @@ public class ProductServiceImpl implements ProductService {
         }
         return map;
     }
+
+    @Override
+    public Long countAll() {
+        return productRepository.countBy();
+    }
 }

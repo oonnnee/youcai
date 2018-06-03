@@ -117,4 +117,9 @@ public class GuestController {
         }
         return ResultVOUtils.success(guestPage);
     }
+
+    @GetMapping("/count")
+    public ResultVO<Long> count(){
+        return ResultVOUtils.success(guestService.countAll());
+    }
 }

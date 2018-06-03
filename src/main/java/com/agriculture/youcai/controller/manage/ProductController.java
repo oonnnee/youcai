@@ -125,4 +125,9 @@ public class ProductController {
 
         return ResultVOUtils.success(productVOPage);
     }
+
+    @GetMapping("/count")
+    public ResultVO<Long> count(){
+        return ResultVOUtils.success(productService.countAll());
+    }
 }

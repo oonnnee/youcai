@@ -108,4 +108,9 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
         Guest findResult = guestRepository.findById("admin");
         return findResult;
     }
+
+    @Override
+    public Long countAll() {
+        return guestRepository.countBy()-1;
+    }
 }

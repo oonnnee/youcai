@@ -52,4 +52,17 @@ public class GuestRepositoryTest {
         assertTrue(NAME+"delete", result == null);
     }
 
+    @Test
+    public void delete(){
+        try {
+
+        guestRepository.delete("1");
+        }catch (Exception  e){}
+    }
+
+    @Test
+    public void countBy(){
+        Long count = guestRepository.countBy();
+        System.out.println(count);
+    }
 }

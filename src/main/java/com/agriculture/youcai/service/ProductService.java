@@ -25,4 +25,6 @@ public interface ProductService {
 
     // 产品id: 产品
     Map<String, Product> findMap();
+
+    Long countAll();
 }

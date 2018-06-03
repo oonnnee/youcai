@@ -15,6 +15,7 @@ import com.agriculture.youcai.vo.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -137,7 +139,7 @@ public class PricelistController {
         return ResultVOUtils.success(pricelistDateVOPage);
     }
 
-    @PostMapping("/save")
+    @PostMapping({"/save", "update"})
     public ResultVO save(
             @RequestParam String guestId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date pdate,
@@ -236,6 +238,49 @@ public class PricelistController {
                     findByGuestIdAndPdateVO.setNote(pricelist.getNote());
                     findByGuestIdAndPdateVOS.add(findByGuestIdAndPdateVO);
                 }
+            }
+            findByGuestIdAndPdateWithCategoryVO.setFindByGuestIdAndPdateVOS(findByGuestIdAndPdateVOS);
+            findByGuestIdAndPdateWithCategoryVOS.add(findByGuestIdAndPdateWithCategoryVO);
+        }
+        /*------------ 3.返回 -------------*/
+        return ResultVOUtils.success(findByGuestIdAndPdateWithCategoryVOS);
+    }
+
+    @GetMapping("/findFullByGuestIdAndPdateWithCategory")
+    public ResultVO<List<FindByGuestIdAndPdateWithCategoryVO>> findFullByGuestIdAndPdateWithCategory(
+            @RequestParam String guestId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date pdate
+    ){
+        /*------------ 1.查询数据 -------------*/
+        /*--- 产品大类数据 ---*/
+        List<Category> categories = categoryService.findAll();
+        /*--- 报价数据 ---*/
+        List<Pricelist> pricelists = pricelistService.findById_GuestIdAndId_pdate(guestId, pdate);
+        Map<String, Pricelist> pricelistMap = pricelistService.findProductIdMap(guestId, pdate);
+        /*--- 产品数据 ---*/
+        Map<String, Product> productMap = productService.findMap();
+        List<Product> products = productService.findAll();
+        /*------------ 2.数据拼装 -------------*/
+        List<FindByGuestIdAndPdateWithCategoryVO> findByGuestIdAndPdateWithCategoryVOS = new ArrayList<>();
+        for (Category category : categories){
+            FindByGuestIdAndPdateWithCategoryVO findByGuestIdAndPdateWithCategoryVO = new FindByGuestIdAndPdateWithCategoryVO();
+            findByGuestIdAndPdateWithCategoryVO.setCategoryCode(category.getCode());
+            findByGuestIdAndPdateWithCategoryVO.setCategoryName(category.getName());
+            List<FindByGuestIdAndPdateVO> findByGuestIdAndPdateVOS = new ArrayList<>();
+            for (Product product : products){
+                if (product.getPCode().equals(category.getCode())){
+                    FindByGuestIdAndPdateVO findByGuestIdAndPdateVO = new FindByGuestIdAndPdateVO();
+                    findByGuestIdAndPdateVO.setProductId(product.getId());
+                    findByGuestIdAndPdateVO.setProductName(product.getName());
+                    findByGuestIdAndPdateVO.setPrice(BigDecimal.ZERO);
+                    findByGuestIdAndPdateVO.setNote("");
+                    if (pricelistMap.containsKey(product.getId())){
+                        findByGuestIdAndPdateVO.setPrice(pricelistMap.get(product.getId()).getPrice());
+                        findByGuestIdAndPdateVO.setNote(pricelistMap.get(product.getId()).getNote());
+                    }
+                    findByGuestIdAndPdateVOS.add(findByGuestIdAndPdateVO);
+                }
+
             }
             findByGuestIdAndPdateWithCategoryVO.setFindByGuestIdAndPdateVOS(findByGuestIdAndPdateVOS);
             findByGuestIdAndPdateWithCategoryVOS.add(findByGuestIdAndPdateWithCategoryVO);
