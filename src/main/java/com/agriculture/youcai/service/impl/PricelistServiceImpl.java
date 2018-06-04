@@ -3,6 +3,8 @@ package com.agriculture.youcai.service.impl;
 import com.agriculture.youcai.dataobject.Pricelist;
 import com.agriculture.youcai.dataobject.PricelistKey;
 import com.agriculture.youcai.dataobject.Product;
+import com.agriculture.youcai.dto.excel.pricelist.CategoryExport;
+import com.agriculture.youcai.dto.excel.pricelist.Export;
 import com.agriculture.youcai.repository.PricelistRepository;
 import com.agriculture.youcai.service.PricelistService;
 import com.agriculture.youcai.service.ProductService;
@@ -75,5 +77,14 @@ public class PricelistServiceImpl implements PricelistService {
             map.put(pricelist.getId().getProductId(), pricelist);
         }
         return map;
+    }
+
+    @Override
+    public Export getExcelExport(String guestId, Date pdate) {
+        Export export = new Export();
+        export.setExpire(10);
+        export.setPdate(pdate);
+        List<CategoryExport> categoryExports = new ArrayList<>();
+        return null;
     }
 }

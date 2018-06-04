@@ -1,6 +1,7 @@
 package com.agriculture.youcai.service;
 
 import com.agriculture.youcai.dataobject.Pricelist;
+import com.agriculture.youcai.dto.excel.pricelist.Export;
 
 import java.util.Date;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface PricelistService {
     void delete(String guestId, Date pdate);
 
     List<Date> findPdatesByGuestId(String guestId);
+
+    Export getExcelExport(String guestId, Date pdate);
 }

@@ -23,8 +23,8 @@ import java.util.Date;
 @RequestMapping("/manage/excel")
 public class ExcelController {
 
-    @GetMapping("/pricelist/export")
-    public ResponseEntity<byte[]> pricelistExport(
+    @GetMapping("/export/pricelist")
+    public ResponseEntity<byte[]> exportPricelist(
             @RequestParam String guestId,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date pdate
     ) throws IOException {
