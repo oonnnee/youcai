@@ -246,46 +246,46 @@ public class PricelistController {
         return ResultVOUtils.success(findByGuestIdAndPdateWithCategoryVOS);
     }
 
-    @GetMapping("/findFullByGuestIdAndPdateWithCategory")
-    public ResultVO<List<FindByGuestIdAndPdateWithCategoryVO>> findFullByGuestIdAndPdateWithCategory(
-            @RequestParam String guestId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date pdate
-    ){
-        /*------------ 1.查询数据 -------------*/
-        /*--- 产品大类数据 ---*/
-        List<Category> categories = categoryService.findAll();
-        /*--- 报价数据 ---*/
-        List<Pricelist> pricelists = pricelistService.findById_GuestIdAndId_pdate(guestId, pdate);
-        Map<String, Pricelist> pricelistMap = pricelistService.findProductIdMap(guestId, pdate);
-        /*--- 产品数据 ---*/
-        Map<String, Product> productMap = productService.findMap();
-        List<Product> products = productService.findAll();
-        /*------------ 2.数据拼装 -------------*/
-        List<FindByGuestIdAndPdateWithCategoryVO> findByGuestIdAndPdateWithCategoryVOS = new ArrayList<>();
-        for (Category category : categories){
-            FindByGuestIdAndPdateWithCategoryVO findByGuestIdAndPdateWithCategoryVO = new FindByGuestIdAndPdateWithCategoryVO();
-            findByGuestIdAndPdateWithCategoryVO.setCategoryCode(category.getCode());
-            findByGuestIdAndPdateWithCategoryVO.setCategoryName(category.getName());
-            List<FindByGuestIdAndPdateVO> findByGuestIdAndPdateVOS = new ArrayList<>();
-            for (Product product : products){
-                if (product.getPCode().equals(category.getCode())){
-                    FindByGuestIdAndPdateVO findByGuestIdAndPdateVO = new FindByGuestIdAndPdateVO();
-                    findByGuestIdAndPdateVO.setProductId(product.getId());
-                    findByGuestIdAndPdateVO.setProductName(product.getName());
-                    findByGuestIdAndPdateVO.setPrice(BigDecimal.ZERO);
-                    findByGuestIdAndPdateVO.setNote("");
-                    if (pricelistMap.containsKey(product.getId())){
-                        findByGuestIdAndPdateVO.setPrice(pricelistMap.get(product.getId()).getPrice());
-                        findByGuestIdAndPdateVO.setNote(pricelistMap.get(product.getId()).getNote());
-                    }
-                    findByGuestIdAndPdateVOS.add(findByGuestIdAndPdateVO);
-                }
-
-            }
-            findByGuestIdAndPdateWithCategoryVO.setFindByGuestIdAndPdateVOS(findByGuestIdAndPdateVOS);
-            findByGuestIdAndPdateWithCategoryVOS.add(findByGuestIdAndPdateWithCategoryVO);
-        }
-        /*------------ 3.返回 -------------*/
-        return ResultVOUtils.success(findByGuestIdAndPdateWithCategoryVOS);
-    }
+//    @GetMapping("/findFullByGuestIdAndPdateWithCategory")
+//    public ResultVO<List<FindByGuestIdAndPdateWithCategoryVO>> findFullByGuestIdAndPdateWithCategory(
+//            @RequestParam String guestId,
+//            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date pdate
+//    ){
+//        /*------------ 1.查询数据 -------------*/
+//        /*--- 产品大类数据 ---*/
+//        List<Category> categories = categoryService.findAll();
+//        /*--- 报价数据 ---*/
+//        List<Pricelist> pricelists = pricelistService.findById_GuestIdAndId_pdate(guestId, pdate);
+//        Map<String, Pricelist> pricelistMap = pricelistService.findProductIdMap(guestId, pdate);
+//        /*--- 产品数据 ---*/
+//        Map<String, Product> productMap = productService.findMap();
+//        List<Product> products = productService.findAll();
+//        /*------------ 2.数据拼装 -------------*/
+//        List<FindByGuestIdAndPdateWithCategoryVO> findByGuestIdAndPdateWithCategoryVOS = new ArrayList<>();
+//        for (Category category : categories){
+//            FindByGuestIdAndPdateWithCategoryVO findByGuestIdAndPdateWithCategoryVO = new FindByGuestIdAndPdateWithCategoryVO();
+//            findByGuestIdAndPdateWithCategoryVO.setCategoryCode(category.getCode());
+//            findByGuestIdAndPdateWithCategoryVO.setCategoryName(category.getName());
+//            List<FindByGuestIdAndPdateVO> findByGuestIdAndPdateVOS = new ArrayList<>();
+//            for (Product product : products){
+//                if (product.getPCode().equals(category.getCode())){
+//                    FindByGuestIdAndPdateVO findByGuestIdAndPdateVO = new FindByGuestIdAndPdateVO();
+//                    findByGuestIdAndPdateVO.setProductId(product.getId());
+//                    findByGuestIdAndPdateVO.setProductName(product.getName());
+//                    findByGuestIdAndPdateVO.setPrice(BigDecimal.ZERO);
+//                    findByGuestIdAndPdateVO.setNote("");
+//                    if (pricelistMap.containsKey(product.getId())){
+//                        findByGuestIdAndPdateVO.setPrice(pricelistMap.get(product.getId()).getPrice());
+//                        findByGuestIdAndPdateVO.setNote(pricelistMap.get(product.getId()).getNote());
+//                    }
+//                    findByGuestIdAndPdateVOS.add(findByGuestIdAndPdateVO);
+//                }
+//
+//            }
+//            findByGuestIdAndPdateWithCategoryVO.setFindByGuestIdAndPdateVOS(findByGuestIdAndPdateVOS);
+//            findByGuestIdAndPdateWithCategoryVOS.add(findByGuestIdAndPdateWithCategoryVO);
+//        }
+//        /*------------ 3.返回 -------------*/
+//        return ResultVOUtils.success(findByGuestIdAndPdateWithCategoryVOS);
+//    }
 }
