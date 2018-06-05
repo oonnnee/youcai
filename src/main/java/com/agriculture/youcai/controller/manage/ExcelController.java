@@ -212,7 +212,9 @@ public class ExcelController {
 
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentDispositionFormData("attachment", "workbook.xlsx");
+        headers.setContentDispositionFormData("attachment",
+                guestId+" "+new SimpleDateFormat("yyyy-MM-dd").format(pdate)
+                        +" pricelist.xls");
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
         wb.write(outByteStream);
