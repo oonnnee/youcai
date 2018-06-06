@@ -5,6 +5,7 @@ import com.agriculture.youcai.enums.ResultEnum;
 import com.agriculture.youcai.exception.YoucaiException;
 import com.agriculture.youcai.repository.GuestRepository;
 import com.agriculture.youcai.service.GuestService;
+import com.agriculture.youcai.utils.EDSUtils;
 import com.agriculture.youcai.utils.KeyUtils;
 import com.agriculture.youcai.utils.ResultVOUtils;
 import com.agriculture.youcai.vo.ResultVO;
@@ -26,7 +27,7 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
     @Override
     public Guest save(Guest guest) {
         guest.setId(KeyUtils.generate());
-        //TODO 【管理端】新增客户，加密
+        guest.setPwd(EDSUtils.encryptBasedDes(guest.getPwd()));
         Guest saveResult = guestRepository.save(guest);
         if (saveResult == null){
             throw new YoucaiException(ResultEnum.MANAGE_GUEST_SAVE_ERROR);
@@ -94,10 +95,10 @@ public class GuestServiceImpl implements GuestService, UserDetailsService {
     @Override
     public void updatePwd(String id, String pwd) {
         /*------------ 1.查询用户 -------------*/
-        Guest findResult = guestRepository.findOne(id);
+        Guest guest = guestRepository.findOne(id);
         /*------------ 2.更新密码 -------------*/
-        //TODO 加密
-        guestRepository.save(findResult);
+        guest.setPwd(EDSUtils.encryptBasedDes(pwd));
+        guestRepository.save(guest);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.agriculture.youcai.dataobject;
 
+import com.agriculture.youcai.utils.EDSUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,7 +49,7 @@ public class Guest implements UserDetails {
     @Override
     @JsonIgnore
     public String getPassword() {
-        return this.pwd;
+        return EDSUtils.decryptBasedDes(this.pwd);
     }
 
     @Override
